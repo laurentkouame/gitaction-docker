@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Build & push Image
-        uses: actions/checkout@V1
+      - uses: actions/checkout@V1
         run:  |
           echo "${{ secrets.DOCKERHUB_TOKEN}}" | docker login -u "laurentkouame" --password-stdin
           docker image build -t laurentkouame/gesto-user-terminal-python:v1.0.1 .
