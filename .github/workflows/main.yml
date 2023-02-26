@@ -4,19 +4,19 @@
 name: [ GITHUB ACTION ]
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+ push:
+  branches: [ master ]
+   pull_request:
+  branches: [ master ]
   
 jobs:
-  build:
-    runs-on:  ubuntu-latest
+ build:
+  runs-on: ubuntu-latest
 
-    steps:
-      - name: Build & push Image
-      - uses: actions/checkout@V1
-        run:  |
-          echo "${{ secrets.DOCKERHUB_TOKEN}}" | docker login -u "laurentkouame" --password-stdin
-          docker image build -t laurentkouame/gesto-user-terminal-python:v1.0.1 .
-          docker push laurentkouame/gesto-user-terminal-python:v1.0.1
+   steps:
+    name: Build & push Image
+    uses: actions/checkout@V1
+    run: |
+     echo "${{ secrets.DOCKERHUB_TOKEN}}" | docker login -u "laurentkouame" --password-stdin
+     docker image build -t laurentkouame/gesto-user-terminal-python:v1.0.1 .
+     docker push laurentkouame/gesto-user-terminal-python:v1.0.1
