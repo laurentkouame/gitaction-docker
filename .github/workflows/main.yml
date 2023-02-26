@@ -40,4 +40,4 @@ jobs:
         
     - name: Test with python
       run: |
-        python
+        python script.py
