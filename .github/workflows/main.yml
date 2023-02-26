@@ -1,4 +1,7 @@
-name: gitaction docker
+##
+##
+
+name: [ GITHUB ACTION ]
 
 on:
  push:
@@ -7,24 +10,13 @@ on:
   branches: [ master ]
   
 jobs:
- docker:
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: laurentkouame
-          password: Qra#d2YW9nJs
-      -
-        name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          push: true
-          tags: laurentkouame/gesto-user-terminal-python:v1.0.1
+ build:
+  runs-on: ubuntu-latest
+
+   steps:
+    name: Build & push Image
+    uses: actions/checkout@V1
+    run: |
+     echo "${{ secrets.DOCKERHUB_TOKEN}}" | docker login -u "laurentkouame" --password-stdin
+     docker image build -t laurentkouame/gesto-user-terminal-python:v1.0.1 .
+     docker push laurentkouame/gesto-user-terminal-python:v1.0.1
