@@ -1,22 +1,43 @@
-##
-##
-
-name: [ GITHUB ACTION ]
+name: Python application
 
 on:
- push:
-  branches: [ master ]
- pull_request:
-  branches: [ master ]
-  
-jobs:
- build:
-  runs-on: ubuntu-latest
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-   steps:
-    name: Build & push Image
-    uses: actions/checkout@V1
-    run: |
-     echo "${{ secrets.DOCKERHUB_TOKEN}}" | docker login -u "laurentkouame" --password-stdin
-     docker image build -t laurentkouame/gesto-user-terminal-python:v1.0.1 .
-     docker push laurentkouame/gesto-user-terminal-python:v1.0.1
+permissions:
+  contents: read
+
+jobs:
+  build:
+  
+    #runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
+    #strategy:
+     #matrix:
+      #os: [ ubuntu-latest, windows-latest, macOs-latest ]
+      
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        
+    - name: Test with python
+      run: |
+        python
